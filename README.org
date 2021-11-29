@@ -1,0 +1,20 @@
+#+TITLE: Advent of Code 2021
+
+My solutions for Advent of Code 2021.
+
+My goals for this Advent of Code are:
+- Learn more about language-oriented development with Racket. Thus, Racket-based
+  solutions may be more contrived than others
+- Learn a handful of new languages
+
+Languages used will be:
+- C
+- OCaml
+- Racket
+- Forth
+
+Optional languages that will be used only after a problem has been solved in one
+of the above languages:
+- Haskell
+- Common Lisp
+- Elixir
