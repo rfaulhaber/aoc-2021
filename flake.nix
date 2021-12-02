@@ -11,13 +11,14 @@
         devShell = pkgs.mkShell {
           nativeBuildInputs = [ pkgs.bashInteractive ];
           buildInputs = with pkgs; [
-            clang
-            racket
-            ghc
-            ocaml
-            gforth
-            clisp
-            elixir
+            clang # C
+            racket # Racket
+            ghc # Haskell
+            ocaml # OCaml
+            gforth # Forth
+            julia-bin # Julia
+            clisp # Common Lisp
+            elixir # Elixir
           ];
         };
       });

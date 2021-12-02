@@ -12,6 +12,7 @@ Languages used will be:
 - OCaml
 - Racket
 - Forth
+- Julia
 
 Optional languages that will be used only after a problem has been solved in one
 of the above languages:
