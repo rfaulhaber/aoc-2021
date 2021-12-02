@@ -41,7 +41,7 @@
                               (apply + triple))
                             (window 3 input))))))
 
-(printf "part 1: ~a\npart 2: ~a" (part1 input) (part2 input))
+(printf "part 1: ~a\npart 1 alt: ~a\npart 2: ~a" (part1 input) (part1-alt input) (part2 input))
 
 (module+ test
   (require rackunit)
