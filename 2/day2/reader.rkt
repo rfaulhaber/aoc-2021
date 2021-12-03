@@ -14,15 +14,15 @@
                           ,@s-exprs))
   (datum->syntax #f module-datum))
 
-(define (string-blank? str)
-  (eq? str ""))
-
 (define (filter-blank-lines str-list)
-  (filter (lambda (str) (not (string-blank? str))) str-list))
+  (filter (lambda (str)
+            (not (eq? "" str)))
+          str-list))
 
 (define (read-code-from port)
-  (let ((input (port->lines port)))
-    (map line-to-sexp (filter null? (filter-blank-lines input)))))
+  (let* ((input (port->lines port))
+        (filtered-input (filter (lambda (line) (not (equal? line ""))) input)))
+    (map line-to-sexp filtered-input)))
 
 (define (line-to-sexp line)
   (let* ((split (string-split line '#px"\\s+"))
@@ -34,8 +34,9 @@
       [("down") `(day2-down ,arg)]
       [("up") `(day2-up ,arg)]
       [("print") '(day2-print)]
-      [("solve") '(day2-solve ,arg)]
+      [("solve") `(day2-solve ,arg)]
       [else (error (format "Invalid cmd found: ~a" cmd))])))
+
 
 (module+ test
   (require rackunit)
