@@ -1,0 +1,30 @@
+#+TITLE: Day2 Language
+
+Day2 is a DSL meant for solving the [[https://adventofcode.com/2021/day/2][Advent of Code 2021 day 2 challenge]].
+
+The language has three functions: ~forward~, ~down~, and ~up~. Each takes a
+number, mutating the program state.
+
+Additionally, there are four other functions: ~print~, which prints the current
+state, ~eval~, which lets you load in commands from another file, ~part1~, which
+prints the solution to part 1 of the challenge, and ~part2~, which prints the
+solution to part 2 of the challenge.
+
+Day2 has no comments.
+
+A sample program could be as such:
+
+#+begin_src
+eval ./sample.day2
+
+forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2
+
+print
+part1
+part2
+#+end_src
