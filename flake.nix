@@ -11,7 +11,11 @@
         devShell = pkgs.mkShell {
           nativeBuildInputs = [ pkgs.bashInteractive ];
           buildInputs = with pkgs; [
-            clang # C
+            # C
+            clang
+            check
+            gdb
+
             racket # Racket
             ghc # Haskell
             ocaml # OCaml
