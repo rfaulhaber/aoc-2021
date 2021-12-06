@@ -104,6 +104,8 @@ int find_max_val(int *vals, int size) {
   return max;
 }
 
+int get_bit_at_position(int val, int position) { return (val >> position) % 2; }
+
 void get_bit_count(int *bit_list, int bit_list_size, int bit_length,
                    int *bit_count) {
   for (int i = 0; i < bit_length; i++) {
@@ -112,17 +114,9 @@ void get_bit_count(int *bit_list, int bit_list_size, int bit_length,
 
   for (int i = 0; i < bit_list_size; i++) {
     int val = bit_list[i];
-    int c = 0;
 
-    while (val > 0) {
-      int bit = val % 2;
-
-      if (bit) {
-        bit_count[c]++;
-      }
-
-      c++;
-      val = val >> 1;
+    for (int j = 0; j < bit_length; j++) {
+      bit_count[j] += get_bit_at_position(val, j);
     }
   }
 }
@@ -173,8 +167,6 @@ int find_epsilon(Input input) {
   return epsilon;
 }
 
-int get_bit_at_position(int val, int position) { return (val >> position) % 2; }
-
 int find_generator_rating(Input input) {
   int *bit_count = malloc(sizeof(int) * input.bit_length);
   get_bit_count(input.vals, input.size, input.bit_length, bit_count);
@@ -185,6 +177,7 @@ int find_generator_rating(Input input) {
 
   for (int i = input.bit_length - 1; i >= 0; i--) {
     int count = bit_count[i];
+    int zeros = int_count - count;
 
     for (int j = 0; j < int_count; j++) {
       int val;
@@ -194,8 +187,7 @@ int find_generator_rating(Input input) {
         val = input.vals[j];
       }
 
-      /* printf("count/int_count %d/%d\n", count, int_count); */
-      if (count >= (int_count / 2)) {
+      if (count >= zeros) {
         if (get_bit_at_position(val, i) == 1) {
           int_list[int_list_size++] = val;
         }
@@ -206,22 +198,8 @@ int find_generator_rating(Input input) {
       }
     }
 
-    printf("pos/count/size %d/%d/%d\n", i, int_count, int_list_size);
-
-    printf("----------int_list----------\n");
-
-    for (int i = 0; i < int_list_size; i++) {
-      printf("int_list[i = %d] %d\n", i, int_list[i]);
-    }
-
     int_count = int_list_size;
     int_list_size = 0;
-
-    printf("----------bit_list----------\n");
-
-    for (int i = 0; i < input.bit_length; i++) {
-      printf("bit_list[i = %d] %d\n", i, bit_count[i]);
-    }
 
     get_bit_count(int_list, int_count, input.bit_length, bit_count);
   }
@@ -240,20 +218,19 @@ int find_scrubber_rating(Input input) {
   int int_list_size = 0;
   int int_count = input.size;
 
-  int threshold = input.size / 2;
-
-  for (int i = input.bit_length - 1; i > 0; i--) {
+  for (int i = input.bit_length - 1; i >= 0; i--) {
     int count = bit_count[i];
+    int zeros = int_count - count;
 
     for (int j = 0; j < int_count; j++) {
       int val;
-      if (i != input.bit_length - 1) {
+      if (i < input.bit_length - 1) {
         val = int_list[j];
       } else {
         val = input.vals[j];
       }
 
-      if (count <= threshold) {
+      if (count >= zeros) {
         if (get_bit_at_position(val, i) == 0) {
           int_list[int_list_size++] = val;
         }
@@ -264,8 +241,18 @@ int find_scrubber_rating(Input input) {
       }
     }
 
+    for (int i = 0; i < int_list_size; i++) {
+      printf("int_list[i = %d] %d\n", i, int_list[i]);
+    }
+
     int_count = int_list_size;
     int_list_size = 0;
+
+    for (int i = 0; i < input.bit_length; i++) {
+      printf("bit_list[i = %d] %d\n", i, bit_count[i]);
+    }
+
+    get_bit_count(int_list, int_count, input.bit_length, bit_count);
   }
 
   free(bit_count);
@@ -329,7 +316,8 @@ int main() {
   int part1 = solve(INPUT_FILE_PATH);
   printf("part 1:\t %d\n", part1);
 
-  printf("generator: %d", solve2(SAMPLE_FILE_PATH));
+  printf("part 2 sample:\t %d", solve2(SAMPLE_FILE_PATH));
+  printf("part 2:\t %d", solve2(INPUT_FILE_PATH));
 
   return 0;
 }
