@@ -1,3 +1,5 @@
+# this is a terrible solution and I'm sorry :(
+
 sample = open("../sample.txt", "r")
 input = open("../input.txt", "r")
 
@@ -45,28 +47,70 @@ function boardMatches(numbers, board::Board)
         push!(matches, findfirst(v->v == number, n))
     end
 
-    matches
+    filter(!isnothing, matches)
+end
+
+function chunk(arr, n)
+    [arr[i:min(i + n - 1, end)] for i in 1:n:length(arr)]
 end
 
 function hasBingo(numbers, matches)
     sortedMatches = sort(matches)
 
-    for row in [1:5]
-
+    if length(sortedMatches) < 5
+        return (false, nothing)
     end
+
+    for run in chunk(sortedMatches, 5)
+        for row in eachrow(completeMatrix)
+            if isequal(row, run)
+                return (true, run)
+            end
+        end
+
+        for col in eachcol(completeMatrix)
+            if isequal(col, run)
+                return (true, run)
+            end
+        end
+    end
+
+    return (false, nothing)
 end
 
-function boardSolvedAt(numbers, board::Board)
-
+function getAllUnmarkedNumbers(matches, board::Board)
+    println("matches", matches)
+    findall(v->!(v in matches), collect(board.numbers))
 end
 
 function solvePart1(numbers, boards::Array{Board})
+    for i in 1:length(numbers)
+        for board in boards
+            n = numbers[1:i]
+            # println("numbers", n)
+            matches = boardMatches(n, board)
 
+            win, run = hasBingo(n, matches)
+
+            if n[length(n)] == "24"
+                println("win", win, matches)
+            end
+
+            if win
+                # println("win at ", numbers[i], numbers)
+                unmarked = getAllUnmarkedNumbers(matches, board)
+                # println("unmarked", unmarked)
+                return sum(unmarked) * parse(Int64, numbers[i])
+            end
+        end
+    end
 end
 
 
 numbers, boards = readInput(sample)
 
-println(numbers)
-println(boards[1])
-println(boardMatches(numbers, boards[1]))
+# println(numbers)
+# println(boards[1])
+# println(hasBingo(numbers, boardMatches(numbers, boards[1])))
+println(solvePart1(numbers, boards))
+# can't figure out this one :(

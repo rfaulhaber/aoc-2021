@@ -19,3 +19,6 @@ of the above languages:
 - Haskell
 - Common Lisp
 - Elixir
+
+In this repo you'll probably find some of the worst code I've written, and it's
+because I'm forcing myself to learn new languages!
